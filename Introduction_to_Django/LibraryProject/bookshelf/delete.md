@@ -4,7 +4,9 @@
 # Delete Book
 
 ## Python Command
+## Python Command
 ```python
+from bookshelf.models import Book
 book.delete()
 Book.objects.all()
 Output
