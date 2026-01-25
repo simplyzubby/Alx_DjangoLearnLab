@@ -6,6 +6,14 @@ from django.shortcuts import render
 from .forms import SearchForm
 from .forms import BookForm
 from django.db import connection
+from .forms import ExampleForm
+
+def example_view(request):
+    form = ExampleForm(request.POST or None)
+    if form.is_valid():
+        title = form.cleaned_data['title']
+    return render(request, 'bookshelf/form.html', {'form': form})
+
 
 with connection.cursor() as cursor:
     cursor.execute(
