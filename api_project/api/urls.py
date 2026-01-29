@@ -1,6 +1,16 @@
-from django.urls import path
-from .views import BookList
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import BookList, BookViewSet
 
+# Create a router and register our viewset with it
+router = DefaultRouter()
+router.register(r'books_all', BookViewSet, basename='book_all')
+
+# Define URL patterns
 urlpatterns = [
-    path('books/', BookList.as_view(), name='book-list'),  # API endpoint: /api/books/
+    # Old ListAPIView (optional)
+    path('books/', BookList.as_view(), name='book-list'),
+
+    # Include router URLs for CRUD operations
+    path('', include(router.urls)),
 ]
