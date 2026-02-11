@@ -1,0 +1,27 @@
+<h2>Comments</h2>
+
+{% for comment in object.comments.all %}
+    <p><strong>{{ comment.author }}</strong> - {{ comment.created_at }}</p>
+    <p>{{ comment.content }}</p>
+
+    {% if user == comment.author %}
+        <a href="{% url 'comment-update' comment.pk %}">Edit</a>
+        <a href="{% url 'comment-delete' comment.pk %}">Delete</a>
+    {% endif %}
+    <hr>
+{% empty %}
+    <p>No comments yet.</p>
+{% endfor %}
+
+{% if user.is_authenticated %}
+    <a href="{% url 'add-comment' object.pk %}">Add Comment</a>
+{% else %}
+    <p>Please login to comment.</p>
+{% endif %}
+<p>Tags:
+{% for tag in object.tags.all %}
+    <a href="{% url 'posts-by-tag' tag.name %}">{{ tag.name }}</a>
+{% empty %}
+    No tags
+{% endfor %}
+</p>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profile</title>
+</head>
+<body>
+<h2>User Profile</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ u_form.as_p }}
+    <button type="submit">Update Profile</button>
+</form>
+
+<a href="{% url 'logout' %}">Logout</a>
+</body>
+</html>
