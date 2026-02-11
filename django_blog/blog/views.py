@@ -76,7 +76,12 @@ class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def test_func(self):
         comment = self.get_object()
         return self.request.user == comment.author
-
+    
+class CommentCreateView(CreateView):
+    model = Comment
+    fields = ['text']  # example field
+    template_name = 'blog/comment_form.html'
+    success_url = '/'  # or wherever you want to redirect after submit
 
 class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Comment
