@@ -35,4 +35,5 @@ urlpatterns = [
     path('tags/<str:tag_name>/', PostsByTagView.as_view(), name='posts-by-tag'),
     path('search/', SearchResultsView.as_view(), name='search'),
      path('search/', search, name='search'),
+     path("post/<int:pk>/delete/", "post/<int:pk>/update/", "post/new/")
 ]
