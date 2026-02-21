@@ -29,7 +29,6 @@ urlpatterns = [
 
     path('logout/', auth_views.LogoutView.as_view(
         template_name='blog/logout.html'), name='logout'),
-     path("comment/<int:pk>/update/", "post/<int:pk>/comments/new/", "comment/<int:pk>/delete/")
 
     path('register/', views.register, name='register'),
     path('profile/', views.profile, name='profile'),
@@ -37,6 +36,6 @@ urlpatterns = [
     path('search/', SearchResultsView.as_view(), name='search'),
      path('search/', search, name='search'),
      path("post/<int:pk>/delete/", "post/<int:pk>/update/", "post/new/")
-       path('tags/<slug:tag_slug>/', views.PostByTagListView.as_view(), name='posts_by_tag'),  # <-- here
+     path("tags/<slug:tag_slug>/', views.PostByTagListView.as_view(), name='posts_by_tag")
      
 ]

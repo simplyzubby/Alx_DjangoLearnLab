@@ -7,4 +7,6 @@ urlpatterns = [
     path('', RedirectView.as_view(pattern_name='post-list', permanent=False)),
     path('admin/', admin.site.urls),
     path('', include('blog.urls')),
+    
+    
 ]
