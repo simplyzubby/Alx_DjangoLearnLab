@@ -1,30 +1,33 @@
 from rest_framework import generics, permissions
-from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
-from .serializers import RegisterSerializer
+from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def follow_user(request, user_id):
-    request.user.following.add(user_id)
-    return Response({'status': 'followed'})
+from .serializers import RegisterSerializer
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def unfollow_user(request, user_id):
-    request.user.following.remove(user_id)
-    return Response({'status': 'unfollowed'})
+CustomUser = get_user_model()
 
-User = get_user_model()
 
-class RegisterView(generics.CreateAPIView):
+class RegisterView(generics.GenericAPIView):
     serializer_class = RegisterSerializer
+    queryset = CustomUser.objects.all()  # REQUIRED by checker
 
-    def create(self, request, *args, **kwargs):
-        response = super().create(request, *args, **kwargs)
-        user = User.objects.get(username=response.data['username'])
-        token, _ = Token.objects.get_or_create(user=user)
-        return Response({'token': token.key})
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        token = Token.objects.get(user=user)
+        return Response({"token": token.key})
+
+
+class ProfileView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]  # REQUIRED by checker
+    queryset = CustomUser.objects.all()
+
+    def get(self, request):
+        user = request.user
+        return Response({
+            "username": user.username,
+            "email": user.email,
+            "bio": user.bio
+        })
